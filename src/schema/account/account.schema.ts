@@ -8,7 +8,7 @@ export class Account extends Document {
   email: string;
 
   @Prop({ unique: true, required: true })
-  user: string;
+  username: string;
 
   @Prop({ required: true })
   password: string;
@@ -18,6 +18,7 @@ export class Account extends Document {
       .update(password)
       .digest('base64');
 
+    console.log(hashedPassword, this.password);
     return hashedPassword === this.password;
   }
 

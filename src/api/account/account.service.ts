@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 import { Account } from 'src/schema/account/account.schema';
 
@@ -11,6 +12,7 @@ import { AccountDto } from 'src/dto/account/account.dto';
 export class AccountService {
   constructor(
     @InjectModel(Account.name) private readonly accountModel: Model<Account>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async createAccount(registryDto: RegistryDto): Promise<Account> {
@@ -21,10 +23,13 @@ export class AccountService {
 
   async tryLogin(accountDto: AccountDto) {
     const account = await this.accountModel.findOne({
-      user: accountDto.user,
+      username: accountDto.username,
+      password: accountDto.password,
     });
 
-    if (account) return true;
-    else return false;
+    if (!account) throw new UnauthorizedException();
+
+    const payload = { sub: account.id, account: account.username };
+    return { token: await this.jwtService.signAsync(payload) };
   }
 }
