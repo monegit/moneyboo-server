@@ -12,15 +12,18 @@ export class Account extends Document {
 
   @Prop({ required: true })
   password: string;
+
+  async comparePassword(password: string) {
+    const hashedPassword = createHash('sha256')
+      .update(password)
+      .digest('base64');
+
+    return hashedPassword === this.password;
+  }
+
+  async hashPassword() {
+    this.password = createHash('sha256').update(this.password).digest('base64');
+  }
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);
-
-AccountSchema.pre('save', function (next) {
-  if (this.isModified('password') || this.isNew) {
-    // Hash Password
-    this.password = createHash('sha256').update(this.password).digest('base64');
-  }
-
-  next();
-});

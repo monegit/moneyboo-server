@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 
 import { Account } from 'src/schema/account/account.schema';
 
+import { RegistryDto } from 'src/dto/account/registry.dto';
 import { AccountDto } from 'src/dto/account/account.dto';
 
 @Injectable()
@@ -12,9 +13,18 @@ export class AccountService {
     @InjectModel(Account.name) private readonly accountModel: Model<Account>,
   ) {}
 
-  async createAccount(accountDto: AccountDto): Promise<Account> {
-    const createAccount = new this.accountModel(accountDto);
+  async createAccount(registryDto: RegistryDto): Promise<Account> {
+    const account = new this.accountModel(registryDto);
 
-    return await createAccount.save();
+    return await account.save();
+  }
+
+  async tryLogin(accountDto: AccountDto) {
+    const account = await this.accountModel.findOne({
+      user: accountDto.user,
+    });
+
+    if (account) return true;
+    else return false;
   }
 }
