@@ -7,12 +7,15 @@ import { Account } from 'src/schema/account/account.schema';
 
 import { RegistryDto } from 'src/dto/account/registry.dto';
 import { AccountDto } from 'src/dto/account/account.dto';
+import { AccessToken } from 'src/types/accessToken';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AccountService {
   constructor(
     @InjectModel(Account.name) private readonly accountModel: Model<Account>,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async createAccount(registryDto: RegistryDto): Promise<Account> {
@@ -29,7 +32,23 @@ export class AccountService {
 
     if (!account) throw new UnauthorizedException();
 
-    const payload = { sub: account.id, account: account.username };
-    return { token: await this.jwtService.signAsync(payload) };
+    const payload: AccessToken = {
+      uid: account.id,
+      username: account.username,
+    };
+    return { access_token: await this.jwtService.signAsync(payload) };
+  }
+
+  async validateToken(token: string) {
+    console.log(token);
+    try {
+      const decoded: AccessToken = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
+
+      return decoded;
+    } catch {
+      throw new Error('Invalid token');
+    }
   }
 }

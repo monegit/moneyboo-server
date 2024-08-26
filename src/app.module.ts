@@ -6,12 +6,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { AccountModule } from './api/account/account.module';
+import { LedgerModule } from './api/ledger/ledger.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(process.env.DB_HOST),
     AccountModule,
+    LedgerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

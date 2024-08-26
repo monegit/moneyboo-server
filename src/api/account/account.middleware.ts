@@ -21,9 +21,3 @@ AccountSchema.pre('findOne', function (next) {
 
   next();
 });
-// @Injectable()
-// export class AccountMiddleware implements NestMiddleware {
-//   use(req: any, res: any, next: () => void) {
-//     next();
-//   }
-// }

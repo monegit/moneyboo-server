@@ -9,10 +9,11 @@ import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { AccountGuard } from './account.guard';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     MongooseModule.forFeature([{ name: Account.name, schema: AccountSchema }]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -24,6 +25,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [AccountController],
-  providers: [AccountService],
+  providers: [
+    AccountService,
+    {
+      provide: APP_GUARD,
+      useClass: AccountGuard,
+    },
+  ],
+  exports: [AccountService],
 })
 export class AccountModule {}
