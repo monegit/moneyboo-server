@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsNotEmpty,
@@ -7,13 +6,9 @@ import {
   MaxLength,
 } from 'class-validator';
 
+import { ApiProperty } from '@nestjs/swagger';
+
 export class LedgerDto {
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    description: '유저 ID',
-    example: '66cb733c77b5f29d8e9c6db7',
-  })
   uid: string;
 
   @IsString()
@@ -36,7 +31,10 @@ export class LedgerDto {
 
   @IsDateString({ strict: true }, { message: '잘못된 날짜 양식입니다.' })
   @IsNotEmpty({ message: '날짜를 적어주세요.' })
-  @ApiProperty({ description: '날짜', example: '2024-08-25' })
+  @ApiProperty({
+    description: '날짜',
+    example: '2024-08-22',
+  })
   date: Date;
 
   @IsString()

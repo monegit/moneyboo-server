@@ -38,7 +38,8 @@ export class AccountGuard implements CanActivate {
       });
 
       request['token'] = token;
-      request['username'] = payload;
+      request['payload'] = payload;
+
       return true;
     } catch {
       throw new UnauthorizedException();

@@ -12,6 +12,7 @@ async function bootstrap() {
   SwaggerModule.setup('moneyboo', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
 
   await app.listen(5001);
 }
