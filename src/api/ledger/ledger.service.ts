@@ -1,4 +1,4 @@
-import { Injectable, Request } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { LedgerDto } from 'src/dto/ledger/ledger.dto';
@@ -18,7 +18,7 @@ export class LedgerService {
     return await ledger.save();
   }
 
-  async getLedger(@Request() token: string) {
+  async getLedger(token: string) {
     const ledger = await this.ledgerModel.find({
       uid: (await this.accountService.validateToken(token)).uid,
     });

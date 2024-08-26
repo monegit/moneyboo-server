@@ -15,9 +15,9 @@ AccountSchema.pre('save', async function (next) {
 });
 
 AccountSchema.pre('findOne', function (next) {
-  const a = this.getQuery();
+  const query = this.getQuery();
 
-  if (a['password']) a['password'] = hashPassword(a['password']);
+  if (query['password']) query['password'] = hashPassword(query['password']);
 
   next();
 });

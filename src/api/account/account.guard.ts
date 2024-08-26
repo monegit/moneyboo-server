@@ -37,13 +37,12 @@ export class AccountGuard implements CanActivate {
         secret: this.configService.get<string>('JWT_SECRET'),
       });
 
+      request['token'] = token;
       request['username'] = payload;
-      // return true;
+      return true;
     } catch {
       throw new UnauthorizedException();
     }
-
-    return true;
   }
 }
 

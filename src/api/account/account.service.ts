@@ -40,7 +40,6 @@ export class AccountService {
   }
 
   async validateToken(token: string) {
-    console.log(token);
     try {
       const decoded: AccessToken = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
