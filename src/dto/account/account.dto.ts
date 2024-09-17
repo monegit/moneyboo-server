@@ -10,7 +10,6 @@ export class AccountDto {
   @IsString({ message: '아이디 양식이 올바르지 않습니다.' })
   @Length(1, 15, { message: '아이디 양식이 올바르지 않습니다.' })
   @IsNotEmpty({ message: '아이디를 입력해주세요.' })
-  @ApiProperty({ description: 'ID', example: 'example123' })
   username: string;
 
   @IsStrongPassword(
