@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 
 import { AccountModule } from './api/account/account.module';
 import { LedgerModule } from './api/ledger/ledger.module';
+import { MailModule } from './api/mail/mail.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LedgerModule } from './api/ledger/ledger.module';
     MongooseModule.forRoot(process.env.DB_HOST),
     AccountModule,
     LedgerModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

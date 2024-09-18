@@ -3,11 +3,12 @@ import { Controller, Get, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { Public } from './account.guard';
-import { RegistryDto } from 'src/dto/account/registry.dto';
 
 import { AccountService } from './account.service';
+
+import { EmailDto } from 'src/dto/common/email.dto';
+import { RegistryDto } from 'src/dto/account/registry.dto';
 import { AccountDto } from 'src/dto/account/account.dto';
-import { EmailDto } from 'src/dto/account/email.dto';
 import { CodeDto } from 'src/dto/account/code.dto';
 
 @ApiTags('계정')
@@ -21,7 +22,7 @@ export class AccountController {
     if (await this.accountService.sendCode(confirmDto)) {
       return res.status(HttpStatus.OK).json({ message: 'ok' });
     } else {
-      return res.status(HttpStatus.FORBIDDEN);
+      return res.status(HttpStatus.FORBIDDEN).json({ message: 'fail' });
     }
   }
 

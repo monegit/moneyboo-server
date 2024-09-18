@@ -5,7 +5,7 @@ import {
   IsStrongPassword,
   Length,
 } from 'class-validator';
-import { EmailDto } from './email.dto';
+import { EmailDto } from '../common/email.dto';
 
 export class RegistryDto extends EmailDto {
   @IsString({ message: '아이디 양식이 올바르지 않습니다.' })

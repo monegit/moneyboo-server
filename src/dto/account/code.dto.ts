@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
-import { EmailDto } from './email.dto';
+import { EmailDto } from '../common/email.dto';
 import { Type } from 'class-transformer';
 
 export class CodeDto extends EmailDto {

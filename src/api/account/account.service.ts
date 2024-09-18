@@ -9,12 +9,12 @@ import { ConfigService } from '@nestjs/config';
 import { Account } from 'src/schema/account/account.schema';
 import { Confirm } from 'src/schema/account/configm.schema';
 
+import { EmailDto } from 'src/dto/common/email.dto';
 import { RegistryDto } from 'src/dto/account/registry.dto';
 import { AccountDto } from 'src/dto/account/account.dto';
+import { CodeDto } from 'src/dto/account/code.dto';
 
 import { AccessToken } from 'src/types/accessToken';
-import { EmailDto } from 'src/dto/account/email.dto';
-import { CodeDto } from 'src/dto/account/code.dto';
 
 function getRandomCode() {
   return Math.floor(100000 + Math.random() * 900000);
@@ -22,14 +22,14 @@ function getRandomCode() {
 
 @Injectable()
 export class AccountService {
+  code: number;
+
   constructor(
     @InjectModel(Account.name) private readonly accountModel: Model<Account>,
     @InjectModel(Confirm.name) private readonly confirmModel: Model<Confirm>,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
-
-  code: number;
 
   async sendCode(emailDto: EmailDto): Promise<boolean> {
     const startDate = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -40,9 +40,11 @@ export class AccountService {
     if (
       (await this.confirmModel.find({ email: emailDto.email })).length <= 10
     ) {
+      const code = getRandomCode();
+
       const confirm = new this.confirmModel({
         ...emailDto,
-        code: getRandomCode(),
+        code: code,
         startDate: moment(startDate).format('YYYY-MM-DD'),
         endDate: moment(startDate).format('HH:mm:ss'),
         startTime: moment(endDate).format('YYYY-MM-DD'),
