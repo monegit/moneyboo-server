@@ -10,11 +10,10 @@ import { Account } from 'src/schema/account/account.schema';
 import { Confirm } from 'src/schema/account/configm.schema';
 
 import { EmailDto } from 'src/dto/common/email.dto';
-import { RegistryDto } from 'src/dto/account/registry.dto';
-import { AccountDto } from 'src/dto/account/account.dto';
 import { CodeDto } from 'src/dto/account/code.dto';
 
 import { AccessToken } from 'src/types/accessToken';
+import { AccountDto } from 'src/dto/account/account.dto';
 
 function getRandomCode() {
   return Math.floor(100000 + Math.random() * 900000);
@@ -68,7 +67,7 @@ export class AccountService {
     }
   }
 
-  async createAccount(registryDto: RegistryDto): Promise<Account> {
+  async createAccount(registryDto: AccountDto): Promise<Account> {
     const account = new this.accountModel(registryDto);
 
     return await account.save();

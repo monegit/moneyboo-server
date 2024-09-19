@@ -7,9 +7,8 @@ import { Public } from './account.guard';
 import { AccountService } from './account.service';
 
 import { EmailDto } from 'src/dto/common/email.dto';
-import { RegistryDto } from 'src/dto/account/registry.dto';
-import { AccountDto } from 'src/dto/account/account.dto';
 import { CodeDto } from 'src/dto/account/code.dto';
+import { AccountDto } from 'src/dto/account/account.dto';
 
 @ApiTags('계정')
 @Controller('account')
@@ -38,7 +37,7 @@ export class AccountController {
 
   @Post('moneyboo/api/registry')
   @Public()
-  async createAccount(@Query() accountDto: RegistryDto) {
+  async createAccount(@Query() accountDto: AccountDto) {
     return await this.accountService.createAccount(accountDto);
   }
 
